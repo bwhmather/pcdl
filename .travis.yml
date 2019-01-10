@@ -1,0 +1,22 @@
+language: python
+sudo: false
+python:
+  - "3.7"
+
+install:
+  - "pip install -e ."
+  - "pip install coveralls"
+  - "pip install pyflakes
+  - "pip install pycodestyle"
+  - "pip install pylint"
+  - "pip install mypy"
+
+script:
+  - "coverage run --source=wmdl setup.py test"
+  - "pycodestyle --ignore=E741 wmdl setup.py"
+  - "pyflakes wmdl setup.py"
+  - "pylint -E wmdl setup.py"
+  - "mypy --ignore-missing-imports wmdl"
+
+after_success:
+  - "coveralls"
