@@ -242,7 +242,7 @@ def _render_90(path: PathBuilder, transformation: Transformation) -> None:
 
 
 def _render_270(path: PathBuilder, transformation: Transformation) -> None:
-    path.line_to(*transformation.transform_point((-RADIUS, -0.5)))
+    path.line_to(*transformation.transform_point((-RADIUS, -RADIUS)))
 
 
 def _render_180(path: PathBuilder, transformation: Transformation) -> None:
