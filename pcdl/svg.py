@@ -11,7 +11,7 @@ from pcdl.grid import (
 from pcdl.layers import Layer
 
 
-GRID = 10
+GRID = 3
 RADIUS = 0.5
 
 
@@ -145,7 +145,7 @@ def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
         svg.start("path", {
             "d": str(path),
             "stroke": "black",
-            "stroke-width": "1px",
+            "stroke-width": "0.25",
             "fill": "none",
         })
         svg.end("path")
@@ -305,7 +305,7 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
         svg.start("path", {
             "d": str(path),
             "stroke": "red",
-            "stroke-width": "1px",
+            "stroke-width": "0.25",
             "fill": "none",
         })
         svg.end("path")
@@ -322,14 +322,14 @@ def _defs(svg: TreeBuilder) -> None:
     svg.start("defs", {})
     svg.start("pattern", {
         "id": "GridPattern",
-        "x": "5", "y": "5",
-        "width": "10", "height": "10",
+        "x": str(GRID / 2), "y": str(GRID / 2),
+        "width": str(GRID), "height": str(GRID),
         "patternUnits": "userSpaceOnUse",
     })
 
     svg.start("rect", {
         "x": "0", "y": "0",
-        "width": "10", "height": "10",
+        "width": str(GRID), "height": str(GRID),
         "fill": "none",
         "stroke": "lightGrey",
         "stroke-width": "1px"
@@ -342,13 +342,15 @@ def _defs(svg: TreeBuilder) -> None:
 
 def render_svg(circuit, output):
     svg = xml.etree.ElementTree.TreeBuilder()
+    width = 31
+    height = 40
 
     svg.start("svg", {
         "version": "1.1",
         "baseProfile": "full",
-        "width": "400mm",
-        "height": "300mm",
-        "viewBox": "0 0 400 300",
+        "width": f"{GRID*width}mm",
+        "height": f"{GRID*height}mm",
+        "viewBox": f"0 0 {GRID*width} {GRID*height}",
         "xmlns": "http://www.w3.org/2000/svg",
     })
     _defs(svg)
