@@ -124,7 +124,7 @@ def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
     # movement of the cutting head.
     pins = sorted(layer.pins(), key=lambda pin: tuple(pin.position))
 
-    r = 0.3  # TODO
+    r = 0.5  # TODO
     r = SCALE * r
 
     for pin in pins:
@@ -231,25 +231,25 @@ def _turn_back(half_edge: _HalfEdge) -> _HalfEdge:
 
 
 def _render_0(path: PathBuilder, transformation: Transformation) -> None:
-    path.line_to(*transformation.transform_point((-0.3, 0.0)))
+    path.line_to(*transformation.transform_point((-0.5, 0.0)))
 
 
 def _render_90(path: PathBuilder, transformation: Transformation) -> None:
-    r = transformation.transform_distance(0.3)
+    r = transformation.transform_distance(0.5)
 
-    path.line_to(*transformation.transform_point((-0.3, 0.0)))
-    path.arc_to(*transformation.transform_point((0.0, 0.3)), rx=r, ry=r)
+    path.line_to(*transformation.transform_point((-0.5, 0.0)))
+    path.arc_to(*transformation.transform_point((0.0, 0.5)), rx=r, ry=r)
 
 
 def _render_270(path: PathBuilder, transformation: Transformation) -> None:
-    path.line_to(*transformation.transform_point((-0.3, -0.3)))
+    path.line_to(*transformation.transform_point((-0.5, -0.5)))
 
 
 def _render_180(path: PathBuilder, transformation: Transformation) -> None:
-    r = transformation.transform_distance(0.3)
+    r = transformation.transform_distance(0.5)
 
-    path.line_to(*transformation.transform_point((-0.3, 0)))
-    path.arc_to(*transformation.transform_point((0.3, 0.0)), rx=r, ry=r)
+    path.line_to(*transformation.transform_point((-0.5, 0)))
+    path.arc_to(*transformation.transform_point((0.5, 0.0)), rx=r, ry=r)
 
 
 def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
@@ -276,7 +276,7 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
             offset=nedge.tgt, scale=SCALE, rotation=nedge.direction - UP,
         )
         path = PathBuilder()
-        path.move_to(*transformation.transform_point((-0.3, -0.3)))
+        path.move_to(*transformation.transform_point((-0.5, -0.5)))
         while True:
             transformation = Transformation(
                 offset=nedge.tgt, scale=SCALE, rotation=nedge.direction - UP,
