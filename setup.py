@@ -22,6 +22,7 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
     ],
     install_requires=[
+        'Pillow',
     ],
     packages=find_packages(),
     package_data={
