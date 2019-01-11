@@ -11,7 +11,8 @@ from pcdl.grid import (
 from pcdl.layers import Layer
 
 
-SCALE = 10
+GRID = 10
+RADIUS = 0.5
 
 
 class PathBuilder(object):
@@ -116,7 +117,7 @@ class Transformation(object):
 def _grid_position_to_svg(position: Coordinate2) -> Tuple[float, float]:
     x, y = position
 
-    return ((SCALE * x), (SCALE * y))
+    return ((GRID * x), (GRID * y))
 
 
 def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
@@ -124,8 +125,7 @@ def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
     # movement of the cutting head.
     pins = sorted(layer.pins(), key=lambda pin: tuple(pin.position))
 
-    r = 0.5  # TODO
-    r = SCALE * r
+    r = GRID * RADIUS
 
     for pin in pins:
         if layer.connected(pin.position):
@@ -231,25 +231,25 @@ def _turn_back(half_edge: _HalfEdge) -> _HalfEdge:
 
 
 def _render_0(path: PathBuilder, transformation: Transformation) -> None:
-    path.line_to(*transformation.transform_point((-0.5, 0.0)))
+    path.line_to(*transformation.transform_point((-RADIUS, 0.0)))
 
 
 def _render_90(path: PathBuilder, transformation: Transformation) -> None:
-    r = transformation.transform_distance(0.5)
+    r = transformation.transform_distance(RADIUS)
 
-    path.line_to(*transformation.transform_point((-0.5, 0.0)))
-    path.arc_to(*transformation.transform_point((0.0, 0.5)), rx=r, ry=r)
+    path.line_to(*transformation.transform_point((-RADIUS, 0.0)))
+    path.arc_to(*transformation.transform_point((0.0, RADIUS)), rx=r, ry=r)
 
 
 def _render_270(path: PathBuilder, transformation: Transformation) -> None:
-    path.line_to(*transformation.transform_point((-0.5, -0.5)))
+    path.line_to(*transformation.transform_point((-RADIUS, -0.5)))
 
 
 def _render_180(path: PathBuilder, transformation: Transformation) -> None:
-    r = transformation.transform_distance(0.5)
+    r = transformation.transform_distance(RADIUS)
 
-    path.line_to(*transformation.transform_point((-0.5, 0)))
-    path.arc_to(*transformation.transform_point((0.5, 0.0)), rx=r, ry=r)
+    path.line_to(*transformation.transform_point((-RADIUS, 0)))
+    path.arc_to(*transformation.transform_point((RADIUS, 0.0)), rx=r, ry=r)
 
 
 def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
@@ -273,13 +273,13 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
         nedge = next(iter(hedges))
 
         transformation = Transformation(
-            offset=nedge.tgt, scale=SCALE, rotation=nedge.direction - UP,
+            offset=nedge.tgt, scale=GRID, rotation=nedge.direction - UP,
         )
         path = PathBuilder()
-        path.move_to(*transformation.transform_point((-0.5, -0.5)))
+        path.move_to(*transformation.transform_point((-RADIUS, -0.5)))
         while True:
             transformation = Transformation(
-                offset=nedge.tgt, scale=SCALE, rotation=nedge.direction - UP,
+                offset=nedge.tgt, scale=GRID, rotation=nedge.direction - UP,
             )
             if _turn_left(nedge) in hedges:
                 nedge = _turn_left(nedge)
@@ -346,8 +346,9 @@ def render_svg(circuit, output):
     svg.start("svg", {
         "version": "1.1",
         "baseProfile": "full",
-        "width": "400",
-        "height": "300",
+        "width": "400mm",
+        "height": "300mm",
+        "viewBox": "0 0 400 300",
         "xmlns": "http://www.w3.org/2000/svg",
     })
     _defs(svg)
