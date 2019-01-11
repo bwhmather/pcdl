@@ -276,20 +276,20 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
             offset=nedge.tgt, scale=SCALE, rotation=nedge.direction - UP,
         )
         path = PathBuilder()
-        path.move_to(*transformation.transform_point((-0.3, 0.0)))
+        path.move_to(*transformation.transform_point((-0.3, -0.3)))
         while True:
             transformation = Transformation(
                 offset=nedge.tgt, scale=SCALE, rotation=nedge.direction - UP,
             )
-            if _turn_right(nedge) in hedges:
-                nedge = _turn_right(nedge)
-                _render_90(path, transformation)
+            if _turn_left(nedge) in hedges:
+                nedge = _turn_left(nedge)
+                _render_270(path, transformation)
             elif _turn_ahead(nedge) in hedges:
                 nedge = _turn_ahead(nedge)
                 _render_0(path, transformation)
-            elif _turn_left(nedge) in hedges:
-                nedge = _turn_left(nedge)
-                _render_270(path, transformation)
+            elif _turn_right(nedge) in hedges:
+                nedge = _turn_right(nedge)
+                _render_90(path, transformation)
             elif _turn_back(nedge) in hedges:
                 nedge = _turn_back(nedge)
                 _render_180(path, transformation)
