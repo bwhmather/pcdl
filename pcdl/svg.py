@@ -26,52 +26,40 @@ class PathBuilder(object):
         self._elements.append(element)
 
     def move(self, dx, dy):
-        self._write("m {dx},{dy}".format(dx=dx, dy=dy))
+        self._write(f"m {dx},{dy}")
 
     def move_to(self, x, y):
-        self._write("M {x},{y}".format(x=x, y=y))
+        self._write(f"M {x},{y}")
 
     def line(self, dx, dy):
-        self._write("l {dx},{dy}".format(dx=dx, dy=dy))
+        self._write(f"l {dx},{dy}")
 
     def line_to(self, x, y):
-        self._write("L {x},{y}".format(x=x, y=y))
+        self._write(f"L {x},{y}")
 
     def quadratic(self, dcx, dcy, dx, dy):
-        self._write("q {dcx},{dcy} {dx},{dy}".format(
-            dcx=dcx, dcy=dcy, dx=dx, dy=dy,
-        ))
+        self._write(f"q {dcx},{dcy} {dx},{dy}")
 
     def quadratic_to(self, cx, cy, x, y):
-        self._write("Q {cx},{cy} {x},{y}".format(cx=cx, cy=cy, x=x, y=y))
+        self._write(f"Q {cx},{cy} {x},{y}")
 
     def cubic(self, dcax, dcay, dcbx, dcby, dx, dy):
-        self._write("c {dcax},{dcay} {dcbx},{dcby} {dx},{dy}".format(
-            dcax=dcax, dcay=dcay, dcbx=dcbx, dcby=dcby, dx=dx, dy=dy,
-        ))
+        self._write(f"c {dcax},{dcay} {dcbx},{dcby} {dx},{dy}")
 
     def cubic_to(self, cax, cay, cbx, cby, x, y):
-        self._write("C {cax},{cay} {cbx},{cby} {x},{y}".format(
-            cax=cax, cay=cay, cbx=cbx, cby=cby, x=x, y=y,
-        ))
+        self._write(f"C {cax},{cay} {cbx},{cby} {x},{y}")
 
     def arc(self, dx, dy, rx, ry, axis=0, large=False, clockwise=True):
         large = 1 if large else 0
         clockwise = 1 if clockwise else 0
 
-        self._write("a {rx},{rx} {axis} {large},{clockwise} {dx},{dy}".format(
-            rx=rx, ry=ry, dx=dx, dy=dy, axis=axis,
-            large=large, clockwise=clockwise,
-        ))
+        self._write(f"a {rx},{rx} {axis} {large},{clockwise} {dx},{dy}")
 
     def arc_to(self, x, y, rx, ry, axis=0, large=False, clockwise=True):
         large = 1 if large else 0
         clockwise = 0 if clockwise else 1  # y axis is flipped in SVG
 
-        self._write("A {rx},{rx} {axis} {large},{clockwise} {x},{y}".format(
-            rx=rx, ry=ry, x=x, y=y, axis=axis,
-            large=large, clockwise=clockwise,
-        ))
+        self._write(f"A {rx},{rx} {axis} {large},{clockwise} {x},{y}")
 
     def close_path(self):
         self._write("Z")
@@ -196,7 +184,7 @@ class _HalfEdge(object):
         return [self.src, self.tgt][index]
 
     def __str__(self):
-        return "HalfEdge({src}, {tgt})".format(src=self.src, tgt=self.tgt)
+        return f"HalfEdge({self.src}, {self.tgt})"
 
     def __repr__(self):
         return str(self)
