@@ -100,26 +100,23 @@ class Layer(object):
         for pin in self.__pins:
             yield _Pin(self, pin)
 
-    def add_link(self, pin_a, pin_b):
+    def add_link(self, a: Coordinate2, b: Coordinate2):
         """Adds a single step, horizontal or vertical link between two, drilled
         pins.
         """
-        (a_x, a_y) = pin_a.position
-        (b_x, b_y) = pin_b.position
-
         # Vertical link
-        if a_x == b_x:
-            if abs(b_y - a_y) != 1:
+        if a.x == b.x:
+            if abs(b.y - a.y) != 1:
                 raise ValueError("Can only link adjacent nodes")
 
-            self.__y_links.add(Coordinate2(a_x, min(a_y, b_y)))
+            self.__y_links.add(Coordinate2(a.x, min(a.y, b.y)))
 
         # Horizontal link
-        elif a_y == b_y:
-            if abs(b_x - a_x) != 1:
+        elif a.y == b.y:
+            if abs(b.x - a.x) != 1:
                 raise ValueError("Can only link adjacent nodes")
 
-            self.__x_links.add(Coordinate2(min(a_x, b_x), a_y))
+            self.__x_links.add(Coordinate2(min(a.x, b.x), a.y))
 
         else:
             raise ValueError("Links must be either horizontal or vertical")
