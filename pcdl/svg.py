@@ -311,50 +311,10 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
         svg.end("path")
 
 
-def _render_transistors(svg: TreeBuilder, layer: Layer) -> None:
-    for transistor in layer.transistors():
-        path = PathBuilder()
-
-        r = SCALE * 0.3
-        t = Transformation(
-            offset=transistor._start, scale=SCALE, rotation=R180,  # TODO
-        )
-
-        path.move_to(*t.transform_point((-1.3, -0.5)))
-        path.line_to(*t.transform_point((-0.3, -0.5)))
-        path.line_to(*t.transform_point((-0.3, 0.0)))
-        path.arc_to(*t.transform_point((0.3, 0.0)), rx=r, ry=r)
-        path.line_to(*t.transform_point((0.3, -0.5)))
-        path.line_to(*t.transform_point((1.3, -0.5)))
-
-        t = Transformation(
-            offset=transistor._stop, scale=SCALE, rotation=R0,  # TODO
-        )
-        path.line_to(*t.transform_point((-1.3, -0.5)))
-        path.line_to(*t.transform_point((-0.3, -0.5)))
-        path.line_to(*t.transform_point((-0.3, 0.0)))
-        path.arc_to(*t.transform_point((0.3, 0.0)), rx=r, ry=r)
-        path.line_to(*t.transform_point((0.3, -0.5)))
-        path.line_to(*t.transform_point((1.3, -0.5)))
-
-        path.close_path()
-
-        path = path.close()
-
-        svg.start("path", {
-            "d": str(path),
-            "stroke": "black",
-            "stroke-width": "1px",
-            "fill": "none",
-        })
-        svg.end("path")
-
-
 def _render_layer(svg: TreeBuilder, layer: Layer) -> None:
     svg.start("g", {})
     _render_routes(svg, layer)
     _render_pins(svg, layer)
-    _render_transistors(svg, layer)
     svg.end("g")
 
 
