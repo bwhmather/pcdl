@@ -325,7 +325,7 @@ def render_layer(layer, output):
     element_tree.write(output)
 
 
-def render_composite(output):
+def render_composite(filenames, output):
     svg = xml.etree.ElementTree.TreeBuilder()
     width = 31
     height = 40
@@ -366,18 +366,14 @@ def render_composite(output):
     })
     svg.end("rect")
 
-    svg.start("use", {
-        "href": "nand.svg#root",
-    })
-    svg.end("use")
+    for filename in filenames:
+        svg.start("use", {
+            "href": f"{filename}#root",
+        })
+        svg.end("use")
 
     svg.end("svg")
     element = svg.close()
     element_tree = xml.etree.ElementTree.ElementTree(element)
 
     element_tree.write(output)
-
-
-    for layer in circuit:
-        _render_layer(svg, layer)
-
