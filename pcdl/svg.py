@@ -299,14 +299,46 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
         svg.end("path")
 
 
-def _render_layer(svg: TreeBuilder, layer: Layer) -> None:
-    svg.start("g", {})
+def render_layer(layer, output):
+    svg = xml.etree.ElementTree.TreeBuilder()
+    width = 31
+    height = 40
+
+    svg.start("svg", {
+        "version": "1.1",
+        "baseProfile": "full",
+        "width": f"{GRID*width}mm",
+        "height": f"{GRID*height}mm",
+        "viewBox": f"0 0 {GRID*width} {GRID*height}",
+        "xmlns": "http://www.w3.org/2000/svg",
+    })
+
+    svg.start("g", {"id": "root"})
     _render_routes(svg, layer)
     _render_pins(svg, layer)
     svg.end("g")
 
+    svg.end("svg")
+    element = svg.close()
+    element_tree = xml.etree.ElementTree.ElementTree(element)
 
-def _defs(svg: TreeBuilder) -> None:
+    element_tree.write(output)
+
+
+def render_composite(output):
+    svg = xml.etree.ElementTree.TreeBuilder()
+    width = 31
+    height = 40
+
+    svg.start("svg", {
+        "version": "1.1",
+        "baseProfile": "full",
+        "width": f"{GRID*width}mm",
+        "height": f"{GRID*height}mm",
+        "viewBox": f"0 0 {GRID*width} {GRID*height}",
+        "xmlns": "http://www.w3.org/2000/svg",
+    })
+
     svg.start("defs", {})
     svg.start("pattern", {
         "id": "GridPattern",
@@ -327,22 +359,6 @@ def _defs(svg: TreeBuilder) -> None:
     svg.end("pattern")
     svg.end("defs")
 
-
-def render_svg(circuit, output):
-    svg = xml.etree.ElementTree.TreeBuilder()
-    width = 31
-    height = 40
-
-    svg.start("svg", {
-        "version": "1.1",
-        "baseProfile": "full",
-        "width": f"{GRID*width}mm",
-        "height": f"{GRID*height}mm",
-        "viewBox": f"0 0 {GRID*width} {GRID*height}",
-        "xmlns": "http://www.w3.org/2000/svg",
-    })
-    _defs(svg)
-
     svg.start("rect", {
         "width": "100%",
         "height": "100%",
@@ -350,11 +366,18 @@ def render_svg(circuit, output):
     })
     svg.end("rect")
 
-    for layer in circuit:
-        _render_layer(svg, layer)
+    svg.start("use", {
+        "href": "nand.svg#root",
+    })
+    svg.end("use")
 
     svg.end("svg")
     element = svg.close()
     element_tree = xml.etree.ElementTree.ElementTree(element)
 
     element_tree.write(output)
+
+
+    for layer in circuit:
+        _render_layer(svg, layer)
+
