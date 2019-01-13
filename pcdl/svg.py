@@ -136,7 +136,7 @@ def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
 
         svg.start("path", {
             "d": str(path),
-            "stroke": "black",
+            "stroke": "red",
             "stroke-width": "0.25",
             "fill": "none",
         })
