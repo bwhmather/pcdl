@@ -303,6 +303,27 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
         svg.end("path")
 
 
+def _render_outline(svg: TreeBuilder, layer: Layer) -> None:
+    w = layer.width * layer.grid
+    h = layer.height * layer.grid
+
+    path = PathBuilder()
+    path.move_to(0, 0)
+    path.line_to(w, 0)
+    path.line_to(w, h)
+    path.line_to(0, h)
+    path.close_path()
+    path = path.close()
+
+    svg.start("path", {
+        "d": str(path),
+        "stroke": "red",
+        "stroke-width": "0.25",
+        "fill": "none",
+    })
+    svg.end("path")
+
+
 def render_layer(layer, output):
     svg = xml.etree.ElementTree.TreeBuilder()
     width = layer.width
@@ -321,6 +342,7 @@ def render_layer(layer, output):
     svg.start("g", {"id": "root"})
     _render_routes(svg, layer)
     _render_pins(svg, layer)
+    _render_outline(svg, layer)
     svg.end("g")
 
     svg.end("svg")
