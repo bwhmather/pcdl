@@ -301,15 +301,16 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
 
 def render_layer(layer, output):
     svg = xml.etree.ElementTree.TreeBuilder()
-    width = 31
-    height = 40
+    width = layer.width
+    height = layer.height
+    grid = layer.grid
 
     svg.start("svg", {
         "version": "1.1",
         "baseProfile": "full",
-        "width": f"{GRID*width}mm",
-        "height": f"{GRID*height}mm",
-        "viewBox": f"0 0 {GRID*width} {GRID*height}",
+        "width": f"{grid * width}mm",
+        "height": f"{ grid * height}mm",
+        "viewBox": f"0 0 {grid * width} {grid * height}",
         "xmlns": "http://www.w3.org/2000/svg",
     })
 

@@ -12,7 +12,7 @@ def load_gif(filename):
         width, height = image.size
         transparency = image.info['transparency']
 
-        layer = Layer()  # width=image.width, height=image.height)
+        layer = Layer(width=width, height=height)
         for x in range(width):
             for y in range(height):
                 if image.getpixel((x, y)) == transparency:

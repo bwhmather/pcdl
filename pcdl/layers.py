@@ -74,14 +74,22 @@ class _Pin(object):
 
 class Layer(object):
 
-    def __init__(self, name: Optional[str] = None, thickness: float = 2.0):
+    def __init__(
+        self, *, name: Optional[str] = None,
+        grid: float = 3.0, width: int, height: int,
+        material: str = 'acrylic_2mm',
+    ):
         if name is None:
             global _UNNAMED_LAYER_COUNT
             _UNNAMED_LAYER_COUNT += 1
-            name = f"Unnamed layer {_UNNAMED_LAYER_COUNT}"
+            name = f"unknown{_UNNAMED_LAYER_COUNT}"
         self.name: str = name
 
-        self.thickness: float = thickness
+        self.material: str = material
+
+        self.grid = grid
+        self.width = width
+        self.height = height
 
         # The set of drilled nodes
         self.__pins: Set[Coordinate2] = set()
