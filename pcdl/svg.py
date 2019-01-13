@@ -93,6 +93,8 @@ class Transformation(object):
 
         x += self.offset.x
         y += self.offset.y
+        x += 0.5
+        y += 0.5
         x *= self.scale
         y *= self.scale
 
@@ -113,12 +115,14 @@ def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
     # movement of the cutting head.
     pins = sorted(layer.pins(), key=lambda pin: tuple(pin.position))
 
-    r = GRID * RADIUS
-
     for pin in pins:
         if layer.connected(pin.position):
             continue
-        x, y = _grid_position_to_svg(pin.position)
+        transformation = Transformation(
+            offset=pin.position, scale=layer.grid, rotation=R0
+        )
+        x, y = transformation.transform_point((0, 0))
+        r = transformation.transform_distance(RADIUS)
 
         path = PathBuilder()
         path.move_to(x, y + r)
@@ -261,13 +265,13 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
         nedge = next(iter(hedges))
 
         transformation = Transformation(
-            offset=nedge.tgt, scale=GRID, rotation=nedge.direction - UP,
+            offset=nedge.tgt, scale=layer.grid, rotation=nedge.direction - UP,
         )
         path = PathBuilder()
         path.move_to(*transformation.transform_point((-RADIUS, -0.5)))
         while True:
             transformation = Transformation(
-                offset=nedge.tgt, scale=GRID, rotation=nedge.direction - UP,
+                offset=nedge.tgt, scale=layer.grid, rotation=nedge.direction - UP,
             )
             if _turn_left(nedge) in hedges:
                 nedge = _turn_left(nedge)
@@ -343,7 +347,6 @@ def render_composite(filenames, output):
     svg.start("defs", {})
     svg.start("pattern", {
         "id": "GridPattern",
-        "x": str(GRID / 2), "y": str(GRID / 2),
         "width": str(GRID), "height": str(GRID),
         "patternUnits": "userSpaceOnUse",
     })
