@@ -2,7 +2,7 @@ import pcdl
 
 
 config = dict(
-    grid=3.0,
+    grid=2.0,
     layers=[
         dict(
             name='base',
