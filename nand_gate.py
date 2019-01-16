@@ -1,20 +1,49 @@
 import pcdl
 
 
-filenames = [
-    'layer0_base_acrylic.svg',
-    'layer1_bottom_acrylic.svg',
-    'layer2_wells_acrylic.svg',
-    'layer3_membrane_silicone.svg',
-    'layer4_top_acrylic.svg',
-    'layer5_cover_acrylic.svg',
-]
+cfg = dict(
+    grid=3.0,
+    layers=[
+        dict(
+            name='base',
+            material='acrylic',
+            thickness=2.0,
+        ),
+        dict(
+            name='bottom',
+            material='acrylic',
+            thickness=2.0,
+        ),
+        dict(
+            name='wells',
+            material='acrylic',
+            thickness=2.0,
+        ),
+        dict(
+            name='membrane',
+            material='silicone',
+            thickness=2.0,
+        ),
+        dict(
+            name='top',
+            material='acrylic',
+            thickness=2.0,
+        ),
+        dict(
+            name='cover',
+            material='acrylic',
+            thickness=2.0,
+        ),
+    ],
+)
 
 
 def main():
     layers = pcdl.load_gif('nand.gif')
 
-    for layer, filename in zip(layers, filenames):
+    filenames = []
+    for index, (layer, layer_cfg) in enumerate(zip(layers, cfg['layers'])):
+        filename = f"layer{index}_{layer_cfg['name']}_{layer_cfg['material']}_{layer_cfg['thickness']}.svg"
         with open('build/' + filename, 'wb') as output:
             pcdl.render_layer(layer, output)
         filenames.append(filename)
