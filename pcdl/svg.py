@@ -104,12 +104,6 @@ class Transformation(object):
         return self.scale * distance
 
 
-def _grid_position_to_svg(position: Coordinate2) -> Tuple[float, float]:
-    x, y = position
-
-    return ((GRID * x), (GRID * y))
-
-
 def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
     # Sort the pins left to right then up and down to avoid any pathological
     # movement of the cutting head.
