@@ -11,7 +11,6 @@ from pcdl.grid import (
 from pcdl.layers import Layer
 
 
-GRID = 3
 RADIUS = 0.5
 
 
@@ -346,30 +345,28 @@ def render_layer(layer, output):
     element_tree.write(output)
 
 
-def render_composite(filenames, output):
+def render_composite(filenames, output, *, width=31, height=40, grid=3.0):
     svg = xml.etree.ElementTree.TreeBuilder()
-    width = 31
-    height = 40
 
     svg.start("svg", {
         "version": "1.1",
         "baseProfile": "full",
-        "width": f"{GRID*width}mm",
-        "height": f"{GRID*height}mm",
-        "viewBox": f"0 0 {GRID*width} {GRID*height}",
+        "width": f"{grid*width}mm",
+        "height": f"{grid*height}mm",
+        "viewBox": f"0 0 {grid*width} {grid*height}",
         "xmlns": "http://www.w3.org/2000/svg",
     })
 
     svg.start("defs", {})
     svg.start("pattern", {
         "id": "GridPattern",
-        "width": str(GRID), "height": str(GRID),
+        "width": str(grid), "height": str(grid),
         "patternUnits": "userSpaceOnUse",
     })
 
     svg.start("rect", {
         "x": "0", "y": "0",
-        "width": str(GRID), "height": str(GRID),
+        "width": str(grid), "height": str(grid),
         "fill": "none",
         "stroke": "lightGrey",
         "stroke-width": "1px"
