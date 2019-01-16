@@ -1,7 +1,7 @@
 import pcdl
 
 
-cfg = dict(
+config = dict(
     grid=3.0,
     layers=[
         dict(
@@ -39,18 +39,21 @@ cfg = dict(
 
 
 def main():
-    layers = pcdl.load_gif('nand.gif')
+    layers = pcdl.load_gif('nand.gif', config=config)
 
     filenames = []
-    for index, (layer, layer_cfg) in enumerate(zip(layers, cfg['layers'])):
-        filename = f"layer{index}_{layer_cfg['name']}_{layer_cfg['material']}_{layer_cfg['thickness']}.svg"
+    for index, layer in enumerate(layers):
+        filename = f"layer{index}_{layer.name}_{layer.material}_{layer.thickness}mm.svg"
         with open('build/' + filename, 'wb') as output:
             pcdl.render_layer(layer, output)
         filenames.append(filename)
 
     with open('build/composite.svg', 'wb') as output:
-        #pcdl.render_svg([layers[3]], output)
-        pcdl.render_composite(filenames, output)
+        pcdl.render_composite(
+            filenames, output,
+            width=layers[0].width, height=layers[0].height,
+            grid=layers[0].grid,
+        )
 
 
 

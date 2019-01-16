@@ -1,3 +1,5 @@
+from typing import Optional
+
 import PIL.Image
 import PIL.ImageSequence
 
@@ -5,14 +7,27 @@ from pcdl.grid import Coordinate2
 from pcdl.layers import Layer
 
 
-def load_gif(filename):
+def load_gif(filename, *, config):
     gif = PIL.Image.open(filename)
+
+    grid = config.get('grid', 2.0)
+
     layers = []
-    for image in PIL.ImageSequence.Iterator(gif):
+    for image, layer_config in zip(
+        PIL.ImageSequence.Iterator(gif), config['layers']
+    ):
+        name: Optional[str] = layer_config.get('name')
+
+        material: str = layer_config.get('material', 'acrylic')
+        thickness: float = layer_config.get('thickness', 2.0)
+
         width, height = image.size
         transparency = image.info['transparency']
 
-        layer = Layer(width=width, height=height)
+        layer = Layer(
+            name=name, material=material, thickness=thickness,
+            grid=grid, width=width, height=height,
+        )
         for x in range(width):
             for y in range(height):
                 if image.getpixel((x, y)) == transparency:
