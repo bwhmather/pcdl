@@ -345,7 +345,10 @@ def render_layer(layer, output):
     element_tree.write(output)
 
 
-def render_composite(filenames, output, *, width=31, height=40, grid=3.0):
+def render_composite(
+    filenames, output, *,
+    width: int, height: int, grid: float,
+):
     svg = xml.etree.ElementTree.TreeBuilder()
 
     svg.start("svg", {
