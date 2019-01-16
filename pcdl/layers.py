@@ -77,7 +77,7 @@ class Layer(object):
     def __init__(
         self, *, name: Optional[str] = None,
         grid: float = 3.0, width: int, height: int,
-        material: str = 'acrylic_2mm',
+        material: str = 'acrylic', thickness: float=2.0,
     ):
         if name is None:
             global _UNNAMED_LAYER_COUNT
@@ -86,6 +86,7 @@ class Layer(object):
         self.name: str = name
 
         self.material: str = material
+        self.thickness: float = thickness
 
         self.grid = grid
         self.width = width
