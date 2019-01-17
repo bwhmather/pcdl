@@ -241,8 +241,8 @@ def _render_routes(svg: TreeBuilder, layer: Layer) -> None:
     # Turn list of routes in the layer into a set of unvisited half edges.
     hedges = set()
     for link in layer.links():
-        hedges.add(_HalfEdge(link.pin_a.position, link.pin_b.position))
-        hedges.add(_HalfEdge(link.pin_b.position, link.pin_a.position))
+        hedges.add(_HalfEdge(link.a, link.b))
+        hedges.add(_HalfEdge(link.b, link.a))
 
     # Eliminate pairs of half edges that back onto each other.
     for hedge in list(hedges):

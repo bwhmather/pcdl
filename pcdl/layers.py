@@ -16,27 +16,27 @@ def _sign(i):
 
 class _Link(object):
 
-    def __init__(self, layer, pin_a, pin_b):
+    def __init__(self, layer, a, b):
         self.layer = layer
-        self.pin_a = pin_a
-        self.pin_b = pin_b
+        self.a = a
+        self.b = b
 
     def __eq__(self, other):
         return (
-            self.pin_a == other.pin_a and
-            self.pin_b == other.pin_b and
+            self.a == other.a and
+            self.b == other.b and
             self.layer == other.layer
         )
 
     def __hash__(self):
-        return hash((self.pin_a, self.pin_b))
+        return hash((self.a, self.b))
 
     def __str__(self):
         return "Link(({a_x}, {a_y}), ({b_x}, {b_y}), layer={layer!r})".format(
-            a_x=self.pin_a.position.x,
-            a_y=self.pin_a.position.y,
-            b_x=self.pin_b.position.x,
-            b_y=self.pin_b.position.y,
+            a_x=self.a.x,
+            a_y=self.a.y,
+            b_x=self.b.x,
+            b_y=self.b.y,
             layer=self.layer,
         )
 
@@ -161,15 +161,7 @@ class Layer(object):
 
     def links(self):
         for origin in self.__x_links:
-            yield _Link(
-                self,
-                _Pin(self, origin),
-                _Pin(self, Coordinate2(origin.x + 1, origin.y)),
-            )
+            yield _Link(self, origin, Coordinate2(origin.x + 1, origin.y))
 
         for origin in self.__y_links:
-            yield _Link(
-                self,
-                _Pin(self, origin),
-                _Pin(self, Coordinate2(origin.x, origin.y + 1)),
-            )
+            yield _Link(self, origin, Coordinate2(origin.x, origin.y + 1))
