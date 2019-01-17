@@ -1,0 +1,44 @@
+grid = 2.0
+
+[[channels]]
+name = "routes"
+radius = 0.4
+
+[[channels]]
+name = "ports"
+radius = 0.5
+
+[[channels]]
+name = "mounting"
+radius = 0.5
+
+[[layers]]
+name = "base"
+material = "acrylic"
+thickness = 2.0
+
+[[layers]]
+name = "bottom"
+material = "acrylic"
+thickness = 2.0
+
+[[layers]]
+name = "wells"
+material = "acrylic"
+thickness = 2.0
+
+[[layers]]
+name = "membrane"
+material = "silicone"
+thickness = 2.0
+
+[[layers]]
+name = "top"
+material = "acrylic"
+thickness = 2.0
+
+[[layers]]
+name = "cover"
+material = "acrylic"
+thickness = 2.0
+

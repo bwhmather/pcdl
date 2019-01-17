@@ -1,58 +1,11 @@
+import toml
+
 import pcdl
 
 
-config = dict(
-    grid=2.0,
-    channels=[
-        dict(
-            name='routes',
-            radius=0.4,
-        ),
-        dict(
-            name='ports',
-            radius=0.5,
-        ),
-        dict(
-            name='mounting',
-            radius=0.5,
-        ),
-    ],
-    layers=[
-        dict(
-            name='base',
-            material='acrylic',
-            thickness=2.0,
-        ),
-        dict(
-            name='bottom',
-            material='acrylic',
-            thickness=2.0,
-        ),
-        dict(
-            name='wells',
-            material='acrylic',
-            thickness=2.0,
-        ),
-        dict(
-            name='membrane',
-            material='silicone',
-            thickness=2.0,
-        ),
-        dict(
-            name='top',
-            material='acrylic',
-            thickness=2.0,
-        ),
-        dict(
-            name='cover',
-            material='acrylic',
-            thickness=2.0,
-        ),
-    ],
-)
-
-
 def main():
+    config = toml.load('config.toml')
+
     layers = pcdl.load_gif('nand.gif', config=config)
 
     filenames = []

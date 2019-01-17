@@ -23,6 +23,7 @@ setup(
     ],
     install_requires=[
         'Pillow',
+        'toml',
     ],
     packages=find_packages(),
     package_data={
