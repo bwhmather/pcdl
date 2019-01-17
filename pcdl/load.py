@@ -24,17 +24,26 @@ def load_gif(filename, *, config):
         width, height = image.size
         transparency = image.info['transparency']
 
+        radius_lookup = {}
+        for y, channel in enumerate(config['channels']):
+            colour = image.getpixel((0, y))
+            if colour == transparency:
+                continue
+            radius_lookup[colour] = channel['radius']
+
         layer = Layer(
             name=name, material=material, thickness=thickness,
             grid=grid, width=width, height=height,
         )
-        for x in range(width):
+        for x in range(1, width):
             for y in range(height):
                 if image.getpixel((x, y)) == transparency:
                     continue
 
                 if x < 2 or x > width - 2 or y < 2 or x > height - 2:
                     raise Exception("out of bounds")
+
+                radius = radius_lookup[image.getpixel((x, y))]
 
                 above = image.getpixel((x, y - 1)) != transparency
                 below = image.getpixel((x, y + 1)) != transparency
@@ -43,7 +52,7 @@ def load_gif(filename, *, config):
 
                 # Pixel has no neighbours.
                 if not any([above, below, left, right]):
-                    layer.add_pin(Coordinate2(x, y))
+                    layer.add_pin(Coordinate2(x, y), radius=radius)
 
                 if right:
                     layer.add_link(

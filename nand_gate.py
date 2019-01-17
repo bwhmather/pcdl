@@ -3,6 +3,20 @@ import pcdl
 
 config = dict(
     grid=2.0,
+    channels=[
+        dict(
+            name='routes',
+            radius=0.4,
+        ),
+        dict(
+            name='ports',
+            radius=0.5,
+        ),
+        dict(
+            name='mounting',
+            radius=0.5,
+        ),
+    ],
     layers=[
         dict(
             name='base',

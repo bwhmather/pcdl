@@ -46,9 +46,10 @@ class _Link(object):
 
 class _Pin(object):
 
-    def __init__(self, layer, position):
+    def __init__(self, layer, position, *, radius):
         self.layer = layer
         self.position = position
+        self.radius = radius
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -94,6 +95,7 @@ class Layer(object):
 
         # The set of drilled nodes
         self.__pins: Set[Coordinate2] = set()
+        self.__pin_radiuses: Map[Coordinate2, float] = {}
 
         # The set of nodes with a link to the node on their right
         self.__x_links: Set[Coordinate2] = set()
@@ -101,13 +103,15 @@ class Layer(object):
         # The set of nodes with a link going down
         self.__y_links: Set[Coordinate2] = set()
 
-    def add_pin(self, position: Coordinate2):
+    def add_pin(self, position: Coordinate2, radius):
         self.__pins.add(position)
-        return _Pin(self, position)
+        self.__pin_radiuses[position] = radius
+        return _Pin(self, position, radius=radius)
 
     def pins(self):
         for pin in self.__pins:
-            yield _Pin(self, pin)
+            radius = self.__pin_radiuses[pin]
+            yield _Pin(self, pin, radius=radius)
 
     def add_link(self, a: Coordinate2, b: Coordinate2):
         """Adds a single step, horizontal or vertical link between two, drilled

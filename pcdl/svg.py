@@ -11,7 +11,7 @@ from pcdl.grid import (
 from pcdl.layers import Layer
 
 
-RADIUS = 0.5
+RADIUS = 0.4
 
 
 class PathBuilder(object):
@@ -115,7 +115,7 @@ def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
             offset=pin.position, scale=layer.grid, rotation=R0
         )
         x, y = transformation.transform_point((0, 0))
-        r = transformation.transform_distance(RADIUS)
+        r = transformation.transform_distance(pin.radius)
 
         path = PathBuilder()
         path.move_to(x, y + r)
