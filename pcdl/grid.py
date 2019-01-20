@@ -4,10 +4,10 @@ import collections.abc
 
 
 class Angle(enum.Enum):
-    R0 = enum.auto()
-    R90 = enum.auto()
-    R180 = enum.auto()
-    R270 = enum.auto()
+    R0 = 'R0'
+    R90 = 'R90'
+    R180 = 'R180'
+    R270 = 'R270'
 
     @classmethod
     def _from_int(cls, integer):
@@ -67,10 +67,10 @@ R270 = Angle.R270
 
 
 class Direction(enum.Enum):
-    UP = enum.auto()
-    RIGHT = enum.auto()
-    DOWN = enum.auto()
-    LEFT = enum.auto()
+    UP = 'UP'
+    RIGHT = 'RIGHT'
+    DOWN = 'DOWN'
+    LEFT = 'LEFT'
 
     @classmethod
     def _from_angle(cls, angle):
