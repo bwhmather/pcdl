@@ -1,9 +1,25 @@
+"""
+Datatypes for describing the position and orientation of features on the PCDL
+grid.
+
+For convenience, PCDL uses the same coordinate system as SVG and GIF with the
+origin in the top left and y increasing in the downwards direction.
+
+PCDL uses the type checker to enforce a strict separation between absolute and
+relative measurements.  Absolute measurements can be subtracted to get a
+relative difference, but cannot be added.  Relative measurements cannot be used
+for output.
+"""
 import numbers
 import enum
 import collections.abc
 
 
 class Angle(enum.Enum):
+    """
+    Describes a rotation by a multiple of 90 degrees.
+    """
+
     R0 = 'R0'
     R90 = 'R90'
     R180 = 'R180'
@@ -67,6 +83,10 @@ R270 = Angle.R270
 
 
 class Direction(enum.Enum):
+    """
+    Describes an absolute direction.
+    """
+
     UP = 'UP'
     RIGHT = 'RIGHT'
     DOWN = 'DOWN'
@@ -119,6 +139,10 @@ LEFT = Direction.LEFT
 
 
 class Vector2(collections.abc.Iterable):
+    """
+    Describes a difference between two coordinates.
+    """
+
     __slots__ = ['x', 'y']
 
     x: int
@@ -210,6 +234,10 @@ class Vector2(collections.abc.Iterable):
 
 
 class Coordinate2(collections.abc.Iterable):
+    """
+    Describes an absolute position on the PCDL grid.
+    """
+
     __slots__ = ['x', 'y']
 
     x: int
