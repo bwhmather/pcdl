@@ -75,6 +75,9 @@ class Angle(enum.Enum):
     def __rmul__(self, other):
         return self * other
 
+    def __repr__(self):
+        return self.name
+
 
 R0 = Angle.R0
 R90 = Angle.R90
@@ -130,6 +133,9 @@ class Direction(enum.Enum):
             )
 
         return NotImplemented
+
+    def __repr__(self):
+        return self.name
 
 
 UP = Direction.UP
