@@ -297,34 +297,3 @@ class Coordinate2(collections.abc.Iterable):
             return Coordinate2(self.x - other.x, self.y - other.y)
 
         return NotImplemented
-
-
-class Position(object):
-    __slots__ = ['x', 'y', 'z', 'd']
-
-    def __init__(self, x, y, z=0, *, d=R0):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.d = d
-
-    def __add__(self, other: 'Position') -> 'Position':
-        if not isinstance(other, Position):
-            return NotImplemented
-
-        x, y = (
-            Vector2(self.x, self.y).rotate(self.d) +
-            Vector2(other.x, other.y).rotate(self.d + other.d)
-        )
-        z = self.z + other.z
-        d = self.d + other.d
-
-        return Position(x, y, z, d=d)
-
-    def __str__(self):
-        return "Position(x={x}, y={y}, z={z}, d={d})".format(
-            x=self.x, y=self.y, z=self.z, d=self.d,
-        )
-
-    def __repr__(self):
-        return str(self)
