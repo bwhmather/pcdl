@@ -5,15 +5,6 @@ from pcdl.grid import Coordinate2
 _UNNAMED_LAYER_COUNT = 0
 
 
-def _sign(i):
-    if i > 0:
-        return 1
-    elif i < 0:
-        return -1
-    else:
-        return 0
-
-
 class _Link(object):
 
     def __init__(self, layer, a, b):
