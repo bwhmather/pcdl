@@ -35,7 +35,7 @@ class _Link(object):
         return str(self)
 
 
-class _Pin(object):
+class _Hole(object):
 
     def __init__(self, layer, position, *, radius):
         self.layer = layer
@@ -54,7 +54,7 @@ class _Pin(object):
         return hash(self.position)
 
     def __str__(self):
-        return "Pin(({x}, {y}), layer={layer!r})".format(
+        return "Hole(({x}, {y}), layer={layer!r})".format(
             x=self.position[0],
             y=self.position[1],
             layer=self.layer,
@@ -85,8 +85,8 @@ class Layer(object):
         self.height = height
 
         # The set of drilled nodes
-        self.__pins: Set[Coordinate2] = set()
-        self.__pin_radiuses: Map[Coordinate2, float] = {}
+        self.__holes: Set[Coordinate2] = set()
+        self.__hole_radiuses: Map[Coordinate2, float] = {}
 
         # The set of nodes with a link to the node on their right
         self.__x_links: Set[Coordinate2] = set()
@@ -94,19 +94,19 @@ class Layer(object):
         # The set of nodes with a link going down
         self.__y_links: Set[Coordinate2] = set()
 
-    def add_pin(self, position: Coordinate2, radius):
-        self.__pins.add(position)
-        self.__pin_radiuses[position] = radius
-        return _Pin(self, position, radius=radius)
+    def add_hole(self, position: Coordinate2, radius):
+        self.__holes.add(position)
+        self.__hole_radiuses[position] = radius
+        return _Hole(self, position, radius=radius)
 
-    def pins(self):
-        for pin in self.__pins:
-            radius = self.__pin_radiuses[pin]
-            yield _Pin(self, pin, radius=radius)
+    def holes(self):
+        for hole in self.__holes:
+            radius = self.__hole_radiuses[hole]
+            yield _Hole(self, hole, radius=radius)
 
     def add_link(self, a: Coordinate2, b: Coordinate2):
         """Adds a single step, horizontal or vertical link between two, drilled
-        pins.
+        holes.
         """
         # Vertical link
         if a.x == b.x:

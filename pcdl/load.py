@@ -52,7 +52,7 @@ def load_gif(filename, *, config):
 
                 # Pixel has no neighbours.
                 if not any([above, below, left, right]):
-                    layer.add_pin(Coordinate2(x, y), radius=radius)
+                    layer.add_hole(Coordinate2(x, y), radius=radius)
 
                 if right:
                     layer.add_link(

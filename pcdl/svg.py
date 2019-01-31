@@ -103,19 +103,19 @@ class Transformation(object):
         return self.scale * distance
 
 
-def _render_pins(svg: TreeBuilder, layer: Layer) -> None:
-    # Sort the pins left to right then up and down to avoid any pathological
+def _render_holes(svg: TreeBuilder, layer: Layer) -> None:
+    # Sort the holes left to right then up and down to avoid any pathological
     # movement of the cutting head.
-    pins = sorted(layer.pins(), key=lambda pin: tuple(pin.position))
+    holes = sorted(layer.holes(), key=lambda hole: tuple(hole.position))
 
-    for pin in pins:
-        if layer.connected(pin.position):
+    for hole in holes:
+        if layer.connected(hole.position):
             continue
         transformation = Transformation(
-            offset=pin.position, scale=layer.grid, rotation=R0
+            offset=hole.position, scale=layer.grid, rotation=R0
         )
         x, y = transformation.transform_point((0, 0))
-        r = transformation.transform_distance(pin.radius)
+        r = transformation.transform_distance(hole.radius)
 
         path = PathBuilder()
         path.move_to(x, y + r)
@@ -334,7 +334,7 @@ def render_layer(layer, output):
 
     svg.start("g", {"id": "root"})
     _render_routes(svg, layer)
-    _render_pins(svg, layer)
+    _render_holes(svg, layer)
     _render_outline(svg, layer)
     svg.end("g")
 
