@@ -12,6 +12,10 @@ radius = 0.5
 name = "mounting"
 radius = 0.5
 
+[[channels]]
+name = "wells"
+radius = 0.2
+
 [[layers]]
 name = "base"
 material = "acrylic"
