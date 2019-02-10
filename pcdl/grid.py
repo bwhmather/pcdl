@@ -51,26 +51,26 @@ class Angle(enum.Enum):
         }[self]
 
     def __add__(self, other):
-        if not isinstance(other, Angle):
-            return NotImplemented
+        if isinstance(other, Angle):
+            return Angle._from_int(
+                self._to_int() + other._to_int(),
+            )
 
-        return Angle._from_int(
-            self._to_int() + other._to_int(),
-        )
+        return NotImplemented
 
     def __sub__(self, other):
-        if not isinstance(other, Angle):
-            return NotImplemented
+        if isinstance(other, Angle):
+            return Angle._from_int(
+                self._to_int() - other._to_int(),
+            )
 
-        return Angle._from_int(
-            self._to_int() - other._to_int(),
-        )
+        return NotImplemented
 
     def __mul__(self, other):
-        if not isinstance(other, int):
-            return NotImplemented
+        if isinstance(other, int):
+            return Angle._from_int(self._to_int() * other)
 
-        return Angle._from_int(self._to_int() * other)
+        return NotImplemented
 
     def __rmul__(self, other):
         return self * other
@@ -113,12 +113,12 @@ class Direction(enum.Enum):
         }[self]
 
     def __add__(self, other):
-        if not isinstance(other, Angle):
-            return NotImplemented
+        if isinstance(other, Angle):
+            return Direction._from_angle(
+                self._to_angle() + other,
+            )
 
-        return Direction._from_angle(
-            self._to_angle() + other,
-        )
+        return NotImplemented
 
     def __radd__(self, other):
         return self + other
@@ -162,13 +162,13 @@ class Vector2(collections.abc.Iterable):
         return hash((self.x, self.y))
 
     def __eq__(self, other):
-        if not isinstance(other, Vector2):
-            return NotImplemented
+        if isinstance(other, Vector2):
+            return (
+                self.x == other.x and
+                self.y == other.y
+            )
 
-        return (
-            self.x == other.x and
-            self.y == other.y
-        )
+        return NotImplemented
 
     def __setattr__(self, name, value):
         if hasattr(self, name):
@@ -257,13 +257,13 @@ class Coordinate2(collections.abc.Iterable):
         return hash((self.x, self.y))
 
     def __eq__(self, other):
-        if not isinstance(other, Coordinate2):
-            return NotImplemented
+        if isinstance(other, Coordinate2):
+            return (
+                self.x == other.x and
+                self.y == other.y
+            )
 
-        return (
-            self.x == other.x and
-            self.y == other.y
-        )
+        return NotImplemented
 
     def __setattr__(self, name, value):
         if hasattr(self, name):
