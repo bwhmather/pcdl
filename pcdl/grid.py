@@ -13,6 +13,7 @@ for output.
 import numbers
 import enum
 import collections.abc
+from dataclasses import dataclass
 
 
 class Angle(enum.Enum):
@@ -144,6 +145,7 @@ DOWN = Direction.DOWN
 LEFT = Direction.LEFT
 
 
+@dataclass(frozen=True)
 class Vector2(collections.abc.Iterable):
     """
     Describes a difference between two coordinates.
@@ -153,36 +155,6 @@ class Vector2(collections.abc.Iterable):
 
     x: int
     y: int
-
-    def __init__(self, x, y):
-        super().__setattr__('x', x)
-        super().__setattr__('y', y)
-
-    def __hash__(self):
-        return hash((self.x, self.y))
-
-    def __eq__(self, other):
-        if isinstance(other, Vector2):
-            return (
-                self.x == other.x and
-                self.y == other.y
-            )
-
-        return NotImplemented
-
-    def __setattr__(self, name, value):
-        if hasattr(self, name):
-            raise AttributeError((
-                '{cls!r} attribute {name!r} is read-only'
-            ).format(cls=self.__class__.__name__, name=str(name)))
-
-        else:
-            raise AttributeError((
-                '{cls!r} object has no attribute {name!r}'
-            ).format(cls=self.__class__.__name__, name=str(name)))
-
-    def __repr__(self):
-        return 'Vector2(x={x!r}, y={y!r})'.format(x=self.x, y=self.y)
 
     def __iter__(self):
         yield self.x
@@ -239,6 +211,7 @@ class Vector2(collections.abc.Iterable):
         }[direction]
 
 
+@dataclass(frozen=True)
 class Coordinate2(collections.abc.Iterable):
     """
     Describes an absolute position on the PCDL grid.
@@ -248,36 +221,6 @@ class Coordinate2(collections.abc.Iterable):
 
     x: int
     y: int
-
-    def __init__(self, x, y):
-        super().__setattr__('x', x)
-        super().__setattr__('y', y)
-
-    def __hash__(self):
-        return hash((self.x, self.y))
-
-    def __eq__(self, other):
-        if isinstance(other, Coordinate2):
-            return (
-                self.x == other.x and
-                self.y == other.y
-            )
-
-        return NotImplemented
-
-    def __setattr__(self, name, value):
-        if hasattr(self, name):
-            raise AttributeError((
-                '{cls!r} attribute {name!r} is read-only'
-            ).format(cls=self.__class__.__name__, name=str(name)))
-
-        else:
-            raise AttributeError((
-                '{cls!r} object has no attribute {name!r}'
-            ).format(cls=self.__class__.__name__, name=str(name)))
-
-    def __repr__(self):
-        return 'Coordinate2(x={x!r}, y={y!r})'.format(x=self.x, y=self.y)
 
     def __iter__(self):
         yield self.x
